@@ -229,16 +229,30 @@ void loop() {
     Serial.println();
 
     count++;
-
-
-  */
-
+  }
+*/
   mqttClient.subscribe(topic);
 
   Serial.print("Waiting for messages on topic: ");
   Serial.println(topic);
   Serial.println();
+  
+int messageSize = mqttClient.parseMessage();
+  if (messageSize) {
+    Serial.print("Received a message with topic '");
+    Serial.print(mqttClient.messageTopic());
+    if (mqttClient.messageTopic() == "power_on")
+    {
+      daikinPower(1);
+    }
+    else if (mqttClient.messageTopic() == "power_off")
+    {
+      daikinPower(0);
+    }
+    else if (mqttClient.messageTopic() == "")
+    {
+      daikinPower(0);
+    }
+
   }
-
-
 }
